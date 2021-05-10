@@ -1,0 +1,72 @@
+﻿<UserControl x:Class="MainStockMonitoring.Views.StockMonitoringView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MainStockMonitoring.Views"
+             mc:Ignorable="d" Background="White">
+    <Grid>
+        <StackPanel>
+            <Label HorizontalAlignment="Center" FontSize="25">Stock Price Monitor</Label>
+
+            <Grid Margin="100, 60, 200,10" Height="20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="100"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Background="Black">
+                    <TextBox x:Name="NewStock" Margin="1"  Background="#FFF3F4F5"
+                             Text="{Binding Path=CurrentStockModel.StockName}"></TextBox>
+                </Border>
+
+                <Border Grid.Column="1" Background="Black" Height="20" Width="50">
+                    <Button x:Name="AddStock"  Margin="1" Background="#FFDDDDDD"
+                            Command="{Binding Path=SaveCommand}">Add</Button>
+                </Border>
+            </Grid>
+            <TextBlock x:Name="MessageTbl" Height="25" Margin="100, 1, 100,1"
+                       Text="{Binding Path=Message, Mode=TwoWay}"></TextBlock>
+
+            <ListView ScrollViewer.CanContentScroll ="True" x:Name="StockList" 
+                      Margin="100, 10, 100,10" Background="#FFF1ECEC" Height="500"
+                      ItemsSource="{Binding StockModelList, Mode=TwoWay}">
+
+                <ListView.View>
+
+                    <GridView ColumnHeaderToolTip="Stock Price Information">
+
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=StockName}" 
+                          Width="400">
+                            <GridViewColumnHeader>Ticker</GridViewColumnHeader>
+                        </GridViewColumn>
+
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=StockPrice}" 
+                      Width="100">
+                            <GridViewColumnHeader>Price($)</GridViewColumnHeader>
+                        </GridViewColumn>
+    
+                        <GridViewColumn Width="100">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button x:Name="DeleteStock" Margin="0" VerticalAlignment="Center" Command="{Binding ElementName=StockList, Path=DataContext.DeleteCommand}" 
+                                            CommandParameter="{Binding ElementName=StockList, Path=StockName}">
+                                        <Image Width="24" Height="24" Source="../Resources/RemoveIcon.png"></Image>
+                                   
+                                    </Button>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+
+                </ListView.View>
+            </ListView>
+
+            <WrapPanel HorizontalAlignment="Center">
+                <Button x:Name="StartMonitoring" Command="{Binding Path=StartMonitoringCommand}" Width="100" Margin="0,10,30,10">Start Monitoring</Button>
+                <Button x:Name="StopMonitoring"  Command="{Binding Path=StopMonitoringCommand}" Width="100" Margin="0,10,30,10">Stop Monitoring</Button>
+            </WrapPanel>
+        </StackPanel>
+
+    </Grid>
+</UserControl>
